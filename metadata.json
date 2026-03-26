@@ -1,0 +1,5 @@
+{
+  "name": "Kokuchi-kun Overwork Tool",
+  "description": "Batch generate Discord announcement messages for VRChat events with dynamic dates.",
+  "requestFramePermissions": []
+}
