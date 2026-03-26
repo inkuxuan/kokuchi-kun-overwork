@@ -44,16 +44,34 @@ You can customize the default behavior of the tool by appending the following qu
 
 3. Open your browser and navigate to `http://localhost:3000` (or the port specified in your terminal).
 
-## Deployment
+## Deployment to GitHub Pages (with Custom Domain)
 
-This is a standard Client-Side Single Page Application (SPA) built with Vite. It can be deployed to any static hosting service like Vercel, Netlify, GitHub Pages, Cloudflare Pages, or Google Cloud Run.
+This repository includes a pre-configured GitHub Actions workflow (`.github/workflows/deploy.yml`) that automatically builds and deploys your app to GitHub Pages whenever you push to the `main` or `master` branch.
 
-1. Build the production assets:
-   ```bash
-   npm run build
-   ```
+### Step-by-Step Setup Guide
 
-2. The built files will be output to the `dist/` directory.
+**1. Export and Push to GitHub**
+1. In AI Studio, click the **Settings** (gear icon) or **Export** menu.
+2. Choose **Export to GitHub** and follow the prompts to create a new repository on your GitHub account.
 
-3. **Hosting**: Upload or connect the `dist/` directory to your preferred static hosting provider. 
-   - *Note for routing*: Since this is a React SPA, ensure your hosting provider is configured to rewrite all requests to `index.html` (though this app primarily uses a single route with URL parameters).
+**2. Enable GitHub Pages**
+1. Go to your new repository on GitHub.
+2. Click on the **Settings** tab.
+3. In the left sidebar, click on **Pages**.
+4. Under **Build and deployment**, change the **Source** dropdown from "Deploy from a branch" to **GitHub Actions**.
+
+**3. Trigger the First Deployment**
+1. Go to the **Actions** tab in your repository.
+2. You should see the "Deploy to GitHub Pages" workflow running automatically. If not, you can manually trigger it by clicking on the workflow name and selecting "Run workflow".
+3. Wait for the build and deploy jobs to complete (they will turn green).
+
+**4. Configure Your Custom Domain**
+1. Go back to the **Settings > Pages** tab in your repository.
+2. Scroll down to the **Custom domain** section.
+3. Enter your custom domain (e.g., `tools.yourdomain.com`) and click **Save**.
+4. GitHub will perform a DNS check. You need to configure your domain registrar (e.g., GoDaddy, Namecheap, Cloudflare) to point to GitHub:
+   - Create a **CNAME record** pointing your subdomain (e.g., `tools`) to `<your-github-username>.github.io`.
+   - *(If using an apex/root domain like `yourdomain.com`, you'll need to configure A records pointing to GitHub's IP addresses instead. Check GitHub's documentation for the exact IPs).*
+5. Once DNS propagates (can take a few minutes to a few hours), check the **Enforce HTTPS** box to secure your site with a free SSL certificate.
+
+*(Note: If you decide NOT to use a custom domain and want to host it at `https://<username>.github.io/<repo-name>/`, you will need to update the `vite.config.ts` file to include `base: '/<repo-name>/'` before pushing to GitHub).*

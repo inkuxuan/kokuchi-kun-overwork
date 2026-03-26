@@ -19,7 +19,7 @@ const translations = {
     eventDetails: "Event Details",
     eventDetailsDesc: "Fill in the details for your event announcements.",
     eventTitle: "Event Title",
-    eventTitlePlaceholder: "e.g. Friday Game Event",
+    eventTitlePlaceholder: "e.g. Game Event",
     announcementTitle: "Announcement Title",
     announcementTitlePlaceholder: "e.g. Announcement: <EVENT_TITLE>",
     announcementTitleHelp: "You can use <EVENT_TITLE> and <DATE> placeholders.",
@@ -54,7 +54,7 @@ const translations = {
     eventDetails: "イベント詳細",
     eventDetailsDesc: "イベント告知の詳細を入力してください。",
     eventTitle: "イベントタイトル",
-    eventTitlePlaceholder: "例：金曜日ゲームイベント",
+    eventTitlePlaceholder: "例：ゲームイベント",
     announcementTitle: "告知タイトル",
     announcementTitlePlaceholder: "例：「<EVENT_TITLE>」開催のお知らせ",
     announcementTitleHelp: "<EVENT_TITLE> と <DATE> のプレースホルダーを使用できます。",
@@ -103,7 +103,7 @@ export default function App() {
   const [maxCount, setMaxCount] = useState(4)
 
   const [announcementTitle, setAnnouncementTitle] = useState("「<EVENT_TITLE>」開催のお知らせ")
-  const [eventTitle, setEventTitle] = useState("金曜日ゲームイベント")
+  const [eventTitle, setEventTitle] = useState("ゲームイベント")
   const [announcementContent, setAnnouncementContent] = useState(
     "<DATE> 21:00 から 24:00 まで、「<EVENT_TITLE>」を開催します！\n＜イベントの紹介＞\n途中参加、退室自由です。\nデスクトップ参加や、見学のみのご参加も歓迎です。\n参加方法：グループインスタンスにJOIN\n参加条件・人数制限：特になし（Quest対応）\nお問い合わせ先：＜イベント主催者名＞"
   )
