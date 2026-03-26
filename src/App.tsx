@@ -37,6 +37,9 @@ const translations = {
     copied: "Copied",
     errorNoDate: "Please select at least one date",
     errorMaxDate: (max: number) => `Maximum ${max} messages allowed`,
+    limitModalTitle: "Date Limit Reached",
+    limitModalMessage: (max: number) => `You can only select up to ${max} dates. Please deselect some dates before adding more.`,
+    limitModalClose: "OK",
     successGenerated: (count: number) => `Generated ${count} messages`,
     adminTitle: "Admin URL Generator",
     adminSubtitle: "Generate a custom URL with pre-configured mention tags and limits.",
@@ -72,6 +75,9 @@ const translations = {
     copied: "コピー済み",
     errorNoDate: "日付を選択してください",
     errorMaxDate: (max: number) => `最大 ${max} 件まで生成できます`,
+    limitModalTitle: "日付の上限に達しました",
+    limitModalMessage: (max: number) => `選択できる日付は最大 ${max} 件までです。追加する前に、いくつかの日付を解除してください。`,
+    limitModalClose: "OK",
     successGenerated: (count: number) => `${count} 件のメッセージを生成しました`,
     adminTitle: "管理者用URLジェネレーター",
     adminSubtitle: "メンションタグや制限を事前設定したカスタムURLを生成します。",
@@ -111,6 +117,7 @@ export default function App() {
   const [selectedDates, setSelectedDates] = useState<Date[]>([])
   const [generatedMessages, setGeneratedMessages] = useState<{ date: Date; text: string }[]>([])
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
+  const [showLimitModal, setShowLimitModal] = useState(false)
 
   // Admin State
   const [adminBot, setAdminBot] = useState(mentionBot)
@@ -294,8 +301,19 @@ ${content}`
                   <Calendar
                     mode="multiple"
                     selected={selectedDates}
-                    onSelect={(dates) => setSelectedDates(dates as Date[])}
+                    onSelect={(dates) => {
+                      const next = (dates as Date[]) ?? []
+                      if (next.length > maxCount) {
+                        setShowLimitModal(true)
+                      } else {
+                        setSelectedDates(next)
+                      }
+                    }}
                     className="rounded-md border shadow-sm bg-white"
+                    locale={lang === "ja" ? ja : undefined}
+                    formatters={lang === "ja" ? {
+                      formatCaption: (date) => `${date.getFullYear()}年${date.getMonth() + 1}月`,
+                    } : undefined}
                   />
                   <div className="mt-6 w-full">
                     <Button onClick={handleGenerate} className="w-full" size="lg">
@@ -438,6 +456,16 @@ ${content}`
       </div>
 
       <Toaster position="bottom-right" />
+
+      {showLimitModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setShowLimitModal(false)}>
+          <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <h2 className="text-lg font-semibold text-zinc-900 mb-2">{t.limitModalTitle}</h2>
+            <p className="text-sm text-zinc-600 mb-6">{t.limitModalMessage(maxCount)}</p>
+            <Button className="w-full" onClick={() => setShowLimitModal(false)}>{t.limitModalClose}</Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
